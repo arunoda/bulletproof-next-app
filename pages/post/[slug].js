@@ -1,7 +1,7 @@
 import Theme from '../../components/Theme'
 import ms from 'ms'
 
-export default function Post ({ post, previewData }) {
+export default function Post ({ post }) {
   return (
     <Theme>
       <div className='post'>
@@ -26,7 +26,7 @@ export async function getStaticPaths () {
   }
 }
 
-export async function getStaticProps ({ params, previewData = null }) {
+export async function getStaticProps ({ params }) {
   const [year, month, day, ...rest] = params.slug.split('-')
   const createdAt = (new Date(`${year} ${month} ${day}`)).getTime()
   const title = rest.join(' ')
