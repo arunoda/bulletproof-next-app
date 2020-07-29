@@ -17,6 +17,8 @@ export default function Theme ({ children }) {
                     background-color: #8bc34a;
                     padding: 30px;
                     display: flex;
+                    align-items: center;
+                    line-height: 30px;
                 }
 
                 .header a {
@@ -29,8 +31,17 @@ export default function Theme ({ children }) {
                     color: #fff;
                 }
 
-                .header .logout {
+                .header .user-info {
                     margin-left: auto;
+                    display: flex;
+                    align-items: center;
+                }
+
+                .header img {
+                    width: 30px;
+                    height: 30px;
+                    border-radius: 50%;
+                    margin-right: 10px;
                 }
 
                 .post-list {
