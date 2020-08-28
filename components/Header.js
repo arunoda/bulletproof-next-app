@@ -24,7 +24,7 @@ export default function Header () {
       <div className="user-info">
         {session? (
           <>
-            <img src={session.user.image} className="user"/>
+            <img src={session.user.github.avatar} className="user"/>
             <a href="#" onClick={handleLogout} className="logout">Logout</a>
           </>
         ) : (
