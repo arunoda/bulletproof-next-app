@@ -4,8 +4,6 @@ import { useSession, signIn, signOut } from 'next-auth/client'
 export default function Header () {
   const [session] = useSession()
 
-  console.log('SESSION', session)
-
   const handleLogin = (e) => {
     e.preventDefault()
     signIn('github')
@@ -24,7 +22,7 @@ export default function Header () {
       <div className="user-info">
         {session? (
           <>
-            <img src={session.user.github.avatar} className="user"/>
+            <img src={session.user.profile.avatar} className="user"/>
             <a href="#" onClick={handleLogout} className="logout">Logout</a>
           </>
         ) : (

@@ -2,7 +2,7 @@
   "name": "bulletproof-next-app",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next -p 3009",
+    "dev": "cross-env NEXTAUTH_URL=http://localhost:3009 next -p 3009",
     "build": "next build",
     "start": "next start -p 3009",
     "lint": "standard"
@@ -18,13 +18,15 @@
   },
   "homepage": "https://github.com/arunoda/bulletproof-next-app#readme",
   "dependencies": {
-    "@arunoda/git-cms": "^0.1.0",
+    "@arunoda/git-cms": "^0.2.0",
+    "cross-env": "^7.0.2",
     "markdown-to-jsx": "^6.11.4",
     "ms": "^2.1.2",
     "next": "9.5.2",
     "next-auth": "^3.0.1",
     "react": "^16.13.1",
-    "react-dom": "^16.13.1"
+    "react-dom": "^16.13.1",
+    "swr": "^0.3.0"
   },
   "devDependencies": {
     "standard": "^14.3.4"

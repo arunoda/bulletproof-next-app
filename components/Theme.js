@@ -159,7 +159,7 @@ export default function Theme ({ children }) {
 
                 .add-comment-box {
                     border-top: 1px solid #eee;
-                    padding: 0 0 30px 0;
+                    padding: 10px 0 10px 0;
                 }
 
                 .add-comment-box textarea {
