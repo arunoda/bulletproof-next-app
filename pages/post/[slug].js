@@ -1,8 +1,8 @@
 import Theme from '../../components/Theme'
 import ms from 'ms'
-import { promises as fsPromises } from 'fs'
 import Markdown from 'markdown-to-jsx'
 import Youtube from '../../components/Youtube'
+import githubCms from '../../lib/github-cms'
 
 export default function Post ({ post }) {
   return (
@@ -26,37 +26,12 @@ export default function Post ({ post }) {
   )
 }
 
-export async function getStaticPaths () {
-  const markdownFiles = await fsPromises.readdir('data')
-
-  const paths = markdownFiles.map(filename => {
-    const slug = filename.replace(/.md$/, '')
-    return {
-      params: { slug }
-    }
-  })
-
-  return {
-    paths,
-    fallback: false
-  }
-}
-
-export async function getStaticProps ({ params }) {
-  const [year, month, day, ...rest] = params.slug.split('-')
-  const createdAt = (new Date(`${year} ${month} ${day}`)).getTime()
-  const title = rest.join(' ')
-
-  const content = await fsPromises.readFile(`data/${params.slug}.md`, 'utf8')
+export async function getServerSideProps ({ params }) {
+  const post = await githubCms.getPost(params.slug)
 
   return {
     props: {
-      post: {
-        slug: params.slug,
-        title,
-        content,
-        createdAt
-      }
+      post
     }
   }
 }
