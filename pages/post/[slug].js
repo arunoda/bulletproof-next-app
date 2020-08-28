@@ -6,6 +6,7 @@ import { getPostList, getPost } from '../../lib/data'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Comments from '../../components/Comments'
+import findImageInMarkdown from '../../lib/find-image-in-markdown'
 
 export default function Post({ post }) {
   const router = useRouter()
@@ -92,6 +93,7 @@ export async function getStaticProps({ params }) {
 
   post.url = `${process.env.NEXT_PUBLIC_ROOT_URL}/post/${post.slug}`
   post.summary = `${post.content.substr(0, 100)}`
+  post.image = findImageInMarkdown(post.content)
 
   return {
     props: {
