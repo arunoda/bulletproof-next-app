@@ -3,12 +3,33 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import axios from 'axios'
 import Link from 'next/link'
+import { useSession } from 'next-auth/client'
 
 export default function CreatePost({ }) {
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [submitting, setSubmitting] = useState(false)
+  const [session, loading] = useSession()
+
+  if (loading) {
+    return 'loading...'
+  }
+  
+  if (!session) {
+    return (
+      <Theme>
+        <div className="dashboard">
+          <p>
+            You are not allowed to visit this page.
+          </p>
+          <p>
+            Visit the <Link href="/"><a>homepage</a></Link>
+          </p>
+        </div>
+      </Theme>
+    )
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
