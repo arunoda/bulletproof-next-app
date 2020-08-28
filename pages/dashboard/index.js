@@ -39,7 +39,7 @@ export default function Home ({ postList }) {
   )
 }
 
-export async function getStaticProps ({ req, res }) {
+export async function getServerSideProps ({ req, res }) {
   const session = await getSession({ req })  
   const postList = await getPostList({ownerId: session.user.id})
 
