@@ -3,8 +3,25 @@ import Theme from '../../components/Theme'
 import ms from 'ms'
 import { getPostList } from '../../lib/data'
 import { getSession } from 'next-auth/client'
+import axios from 'axios'
 
 export default function Home ({ postList }) {
+  const handleDelete = async (e, post) => {
+    e.preventDefault()
+    
+    const confirmed = confirm('Do you want to delete this blog post?')
+    if (!confirmed) {
+      return
+    }
+  
+    try {
+      await axios.delete(`/api/post?slug=${encodeURIComponent(post.slug)}`)
+      location.reload()
+    } catch(err) {
+      alert(err.message)
+    }
+  }
+
   return (
     <Theme>
       <div className="dashboard">
@@ -40,7 +57,15 @@ export default function Home ({ postList }) {
 }
 
 export async function getServerSideProps ({ req, res }) {
-  const session = await getSession({ req })  
+  const session = await getSession({ req })
+  if (!session) {
+    res.writeHead(302, {
+      'Location': '/'
+    })
+    res.end()
+    return { props: {} }
+  }
+  
   const postList = await getPostList({ownerId: session.user.id})
 
   return {
