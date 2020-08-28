@@ -57,6 +57,23 @@ export default function Comments({slug}) {
         mutate([...comments, fakeComment], false)
 
         createComment(fakeComment)
+            .catch(err => {
+                mutate(currentComments => {
+                    const newComments = []
+                    for (const c of currentComments) {
+                        if (c.id === fakeComment.id) {
+                            newComments.push({
+                                ...fakeComment,
+                                error: err.message
+                            })
+                        } else {
+                            newComments.push(c)
+                        }
+                    }
+
+                    return newComments
+                }, false)
+            })
     }
 
     if (!comments) {
