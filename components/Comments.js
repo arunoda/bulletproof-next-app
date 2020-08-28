@@ -28,7 +28,19 @@ export default function Comments({slug}) {
         }
     
         const addedComment = await fetchRes.json()
-        mutate()
+        
+        mutate((currentComments) => {
+            const newComments = []
+            for (const c of currentComments) {
+                if (c.id === fakeComment.id) {
+                    newComments.push(addedComment)
+                } else {
+                    newComments.push(c)
+                }
+            }
+        
+            return newComments
+        }, false)
     }
 
     const handleAddComment = async (content) => {
