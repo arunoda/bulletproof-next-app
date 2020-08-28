@@ -90,7 +90,7 @@ export async function getStaticProps({ params }) {
     }
   }
 
-  post.url = `http://localhost:3009/post/${post.slug}`
+  post.url = `${process.env.NEXT_PUBLIC_ROOT_URL}/post/${post.slug}`
   post.summary = `${post.content.substr(0, 100)}`
 
   return {
