@@ -3,6 +3,7 @@ import ms from 'ms'
 import useSWR from 'swr'
 import AddCommentBox from './AddCommentBox'
 import classNames from 'classnames'
+import { useSession } from 'next-auth/client'
 
 async function swrFetcher(path) {
     const res = await fetch(path)
@@ -10,22 +11,21 @@ async function swrFetcher(path) {
 }
 
 export default function Comments({slug}) {
+    const [session] = useSession()
     const {data: comments, mutate} = useSWR(`/api/comments?slug=${slug}`, swrFetcher)
 
     const handleAddComment = async (content) => {
-        const fetchRes = await fetch(`/api/comments?slug=${slug}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content })
-        })
-
-        if (!fetchRes.ok) {
-            alert(`Error: ${fetchRes.text()}`)
+        const fakeComment = {
+            id: Math.random(),
+            userId: session.user.id,
+            name: session.user.profile.name,
+            avatar: session.user.profile.avatar,
+            content,
+            createdAt: Date.now(),
+            clientOnly: true
         }
-
-        mutate()
+    
+        mutate([...comments, fakeComment], false)
     }
 
     if (!comments) {
