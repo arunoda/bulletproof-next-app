@@ -19,6 +19,11 @@ export default function Header () {
       <Link href='/'>
         <a className='title'>My Blog</a>
       </Link>
+      {session && (
+        <Link href='/dashboard'>
+          <a>Dashboard</a>
+        </Link>
+      )}
       <div className="user-info">
         {session? (
           <>

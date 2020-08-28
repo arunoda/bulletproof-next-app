@@ -25,13 +25,15 @@ export default function Theme ({ children }) {
                     text-decoration: none;
                     color: #000;
                     font-weight: 600;
+                    margin-left: 20px;
                 }
 
                 .header a:hover {
                     color: #fff;
                 }
 
-                .header .user-info {
+                .header .user-info,
+                .header .user-info a {
                     margin-left: auto;
                     display: flex;
                     align-items: center;
@@ -43,6 +45,12 @@ export default function Theme ({ children }) {
                     border-radius: 50%;
                     margin-right: 10px;
                     border: 2px solid hsl(88deg, 60%, 85%);
+                }
+
+                .dashboard {
+                    margin: 50px auto;
+                    max-width: 650px;
+                    padding: 0 30px;
                 }
 
                 .post-list {
@@ -239,6 +247,99 @@ export default function Theme ({ children }) {
     
                 .youtube-container:hover {
                     opacity: 0.8;
+                }
+
+                .dashboard {
+                    margin: 50px auto;
+                    max-width: 650px;
+                    padding: 0 30px;
+                }
+
+                .dashboard p a {
+                    color: #1e88e5;
+                    text-decoration: none;
+                }
+
+                .dashboard p a:hover {
+                    border-bottom: 1px solid #1e88e5;
+                }
+
+                .dashboard .heading {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                .dashboard .create-new {
+                    margin: 0 0 0 auto;
+                    text-decoration: none;
+                    font-size: 14px;
+                    line-height: 20px;
+                    padding: 5px 15px;
+                    border-radius: 2px;
+                    font-weight: 500;
+                    background-color: hsl(199deg, 100%, 80%);
+                    color: hsl(199deg, 100%, 10%);
+                }
+
+                .dashboard .create-new:hover {
+                    opacity: 0.8;
+                }
+
+                .dashboard-post {
+                    display: block;
+                    border: 1px solid #8bc34a;
+                    color: #222;
+                    text-decoration: none;
+                    padding: 15px;
+                    border-radius: 2px;
+                    margin: 20px 0;
+                }
+
+                .dashboard-post h3 {
+                    margin: 5px 0;
+                    font-size: 16px;
+                    font-weight: 600;
+                }
+
+                .dashboard-post .time {
+                    color: #666;
+                    font-size: 12px;
+                }
+
+                .dashboard-post a {
+                    margin-right: 5px;
+                    text-decoration: none;
+                    font-size: 10px;
+                    padding: 2px 10px;
+                    border-radius: 2px;
+                    font-weight: 500;
+                }
+
+                .dashboard-post a:hover {
+                    opacity: 0.8;
+                }
+
+                .dashboard-post a.delete {
+                    background-color: hsl(0deg, 100%, 80%);
+                    color: hsl(0deg, 100%, 10%);
+                }
+
+                .dashboard-post a.edit {
+                    background-color: hsl(45deg, 100%, 80%);
+                    color: hsl(45deg, 100%, 10%);
+                }
+
+                .dashboard input,
+                .dashboard textarea {
+                    margin: 5px 0;
+                    padding: 5px;
+                    width: 100%;
+                    border: 1px solid hsl(0deg, 0%, 80%);
+                }
+
+                .dashboard textarea {
+                    height: 250px;
                 }
             `}
       </style>
