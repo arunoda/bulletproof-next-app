@@ -123,6 +123,12 @@ export default function Theme ({ children }) {
                     opacity: 0.6;
                 }
 
+                .comment.error {
+                    opacity: 1;
+                    color: hsl(0deg, 50%, 40%);;
+                    background-color: hsl(0deg, 50%, 95%);
+                }
+
                 .comment-author {
                     display: flex;
                     align-items: center;

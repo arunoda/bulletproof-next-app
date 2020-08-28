@@ -19,6 +19,7 @@
   "homepage": "https://github.com/arunoda/bulletproof-next-app#readme",
   "dependencies": {
     "@arunoda/git-cms": "^0.2.0",
+    "classnames": "^2.2.6",
     "cross-env": "^7.0.2",
     "markdown-to-jsx": "^6.11.4",
     "ms": "^2.1.2",

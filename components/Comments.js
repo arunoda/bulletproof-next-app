@@ -2,6 +2,7 @@ import Markdown from 'markdown-to-jsx'
 import ms from 'ms'
 import useSWR from 'swr'
 import AddCommentBox from './AddCommentBox'
+import classNames from 'classnames'
 
 async function swrFetcher(path) {
     const res = await fetch(path)
@@ -42,9 +43,13 @@ export default function Comments({slug}) {
             {comments && comments.length > 0 ? (
                 <div className="comments">
                     {comments.map(c => (
-                        <div key={c.id} className={c.clientOnly? 'comment client-only' : 'comment'}>
+                        <div key={c.id} className={classNames({
+                            comment: true,
+                            'client-only': c.clientOnly,
+                            error: c.error
+                        })}>
                             <div className="comment-content">
-                                <Markdown>{c.content || ''}</Markdown>
+                                <Markdown>{c.error || c.content || ''}</Markdown>
                             </div>
                             <div className="comment-author">
                                 <img src={c.avatar} title={c.name}/>
