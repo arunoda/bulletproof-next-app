@@ -3,7 +3,7 @@ import ms from 'ms'
 import useSWR from 'swr'
 import AddCommentBox from './AddCommentBox'
 import classNames from 'classnames'
-import { useSession } from 'next-auth/client'
+import axios from 'axios'
 
 async function swrFetcher(path) {
     const res = await fetch(path)
@@ -11,69 +11,23 @@ async function swrFetcher(path) {
 }
 
 export default function Comments({slug}) {
-    const [session] = useSession()
-    const {data: comments, mutate} = useSWR(`/api/comments?slug=${slug}`, swrFetcher)
-
-    const createComment = async (fakeComment) => {
-        const fetchRes = await fetch(`/api/comments?slug=${slug}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content: fakeComment.content })
-        })
+    const {data, mutate} = useSWR(
+        `/api/comments?slug=${slug}`,
+        swrFetcher
+    );
     
-        if (!fetchRes.ok) {
-            throw new Error(await fetchRes.text())
-        }
-    
-        const addedComment = await fetchRes.json()
-        
-        mutate((currentComments) => {
-            const newComments = []
-            for (const c of currentComments) {
-                if (c.id === fakeComment.id) {
-                    newComments.push(addedComment)
-                } else {
-                    newComments.push(c)
-                }
-            }
-        
-            return newComments
-        }, false)
-    }
+    let comments = data;
 
     const handleAddComment = async (content) => {
-        const fakeComment = {
-            id: Math.random(),
-            userId: session.user.id,
-            name: session.user.profile.name,
-            avatar: session.user.profile.avatar,
-            content,
-            createdAt: Date.now(),
-            clientOnly: true
-        }
-    
-        mutate([...comments, fakeComment], false)
-
-        createComment(fakeComment)
-            .catch(err => {
-                mutate(currentComments => {
-                    const newComments = []
-                    for (const c of currentComments) {
-                        if (c.id === fakeComment.id) {
-                            newComments.push({
-                                ...fakeComment,
-                                error: err.message
-                            })
-                        } else {
-                            newComments.push(c)
-                        }
-                    }
-
-                    return newComments
-                }, false)
+        try {
+            await axios.post(`/api/comments?slug=${slug}`, {
+                content
             })
+            await mutate()
+        } catch(err) {
+            const alertMessage = err.response? err.response.data : err.message
+            alert(alertMessage)
+        }
     }
 
     if (!comments) {

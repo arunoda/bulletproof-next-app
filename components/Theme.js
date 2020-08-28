@@ -171,8 +171,12 @@ export default function Theme ({ children }) {
                     margin: 0 5px 0 0;
                 }
 
+                .comments .load-more {
+                    font-size: 14px;
+                    font-weight: 500;
+                }
+
                 .add-comment-box {
-                    border-top: 1px solid #eee;
                     padding: 10px 0 10px 0;
                 }
 

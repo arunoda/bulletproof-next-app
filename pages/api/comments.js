@@ -2,10 +2,16 @@ import { getComments, addComment } from '../../lib/data'
 import { getSession } from 'next-auth/client'
 
 export default async function comments(req, res) {
-    const { slug } = req.query
+    const { slug, sort, limit, offset } = req.query
 
     if (req.method === 'GET') {
-        const comments = await getComments(slug)
+        const options = {
+            sort: sort? parseInt(sort, 10) : undefined,
+            limit: limit? parseInt(limit, 10) : undefined,
+            offset: offset? parseInt(offset, 10): undefined
+        }
+        
+        const comments = await getComments(slug, options)
         return res.send(comments)
     }
 
@@ -29,9 +35,6 @@ export default async function comments(req, res) {
             content: req.body.content,
             createdAt: Date.now()
         }
-
-        // Slow the API to demonstrate real life behavior
-        await new Promise((r) => setTimeout(r, 2000))
 
         await addComment(slug, comment)
         return res.send(comment)
