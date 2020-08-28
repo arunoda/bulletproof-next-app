@@ -42,6 +42,7 @@ export default function Theme ({ children }) {
                     height: 30px;
                     border-radius: 50%;
                     margin-right: 10px;
+                    border: 2px solid hsl(88deg, 60%, 85%);
                 }
 
                 .post-list {

@@ -2,7 +2,7 @@ import Theme from '../../components/Theme'
 import ms from 'ms'
 import Markdown from 'markdown-to-jsx'
 import Youtube from '../../components/Youtube'
-import githubCms from '../../lib/github-cms'
+import { getPostList, getPost } from '../../lib/data'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 
@@ -49,7 +49,7 @@ export default function Post ({ post }) {
 }
 
 export async function getStaticPaths() {
-  const postList = await githubCms.getPostList()
+  const postList = await getPostList()
   const paths = postList.map(post => ({
     params: {
       slug: post.slug
@@ -67,7 +67,7 @@ export async function getStaticProps ({ params }) {
   let post = null
 
   try {
-    post = await githubCms.getPost(params.slug)
+    post = await getPost(params.slug)
   } catch (err) {
     if (err.status !== 404) {
       throw err

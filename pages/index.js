@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import Theme from '../components/Theme'
 import ms from 'ms'
-import githubCms from '../lib/github-cms'
+import { getPostList } from '../lib/data'
 
 export default function Home ({ postList }) {
   return (
@@ -23,7 +23,7 @@ export default function Home ({ postList }) {
 }
 
 export async function getStaticProps () {
-  const postList = await githubCms.getPostList()
+  const postList = await getPostList()
 
   return {
     props: {
