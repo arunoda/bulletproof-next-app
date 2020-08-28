@@ -1,6 +1,7 @@
 import Markdown from 'markdown-to-jsx'
 import ms from 'ms'
 import useSWR from 'swr'
+import AddCommentBox from './AddCommentBox'
 
 async function swrFetcher(path) {
     const res = await fetch(path)
@@ -9,6 +10,22 @@ async function swrFetcher(path) {
 
 export default function Comments({slug}) {
     const {data: comments, mutate} = useSWR(`/api/comments?slug=${slug}`, swrFetcher)
+
+    const handleAddComment = async (content) => {
+        const fetchRes = await fetch(`/api/comments?slug=${slug}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content })
+        })
+
+        if (!fetchRes.ok) {
+            alert(`Error: ${fetchRes.text()}`)
+        }
+
+        mutate()
+    }
 
     if (!comments) {
         return (
@@ -43,6 +60,7 @@ export default function Comments({slug}) {
                     </div>
                 </div>
             )}
+            <AddCommentBox onSubmit={handleAddComment}/>
         </div>
     )
 }
