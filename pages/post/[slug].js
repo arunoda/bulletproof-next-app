@@ -5,9 +5,11 @@ import Youtube from '../../components/Youtube'
 import { getPostList, getPost } from '../../lib/data'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
+import Comments from '../../components/Comments'
 
 export default function Post ({ post }) {
   const router = useRouter()
+
   if (router.isFallback) {
     return (
       <Theme>
@@ -43,6 +45,8 @@ export default function Post ({ post }) {
             {post.content}
           </Markdown>
         </div>
+        <b>Comments</b>
+        <Comments slug={post.slug}/>
       </div>
     </Theme>
   )
