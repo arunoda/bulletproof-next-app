@@ -4,6 +4,7 @@ import Markdown from 'markdown-to-jsx'
 import Youtube from '../../components/Youtube'
 import githubCms from '../../lib/github-cms'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
 export default function Post ({ post }) {
   const router = useRouter()
@@ -11,6 +12,17 @@ export default function Post ({ post }) {
     return (
       <Theme>
         loading...
+      </Theme>
+    )
+  }
+
+  if (!post) {
+    return (
+      <Theme>
+        <Head>
+          <meta name="robots" content="noindex" />
+        </Head>
+        404 - Page not found!
       </Theme>
     )
   }
@@ -52,7 +64,15 @@ export async function getStaticPaths() {
 
 
 export async function getStaticProps ({ params }) {
-  const post = await githubCms.getPost(params.slug)
+  let post = null
+
+  try {
+    post = await githubCms.getPost(params.slug)
+  } catch (err) {
+    if (err.status !== 404) {
+      throw err
+    }
+  }
 
   return {
     props: {
