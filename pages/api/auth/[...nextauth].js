@@ -10,9 +10,21 @@ const providers = [
 
 const callbacks = {}
 
+callbacks.signIn = async function signIn(user, account, metadata) {
+    const emailRes = await fetch('https://api.github.com/user/emails', {
+        headers: {
+            'Authorization': `token ${account.accessToken}`
+        }
+    })
+    const emails = await emailRes.json()
+    const primaryEmail = emails.find(e => e.primary).email;
+
+    user.email = primaryEmail;
+}
+
 const options = {
-  providers,
-  callbacks
+    providers,
+    callbacks
 }
 
 export default (req, res) => NextAuth(req, res, options)
