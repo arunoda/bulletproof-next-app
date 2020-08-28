@@ -7,7 +7,7 @@ import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Comments from '../../components/Comments'
 
-export default function Post ({ post }) {
+export default function Post({ post }) {
   const router = useRouter()
 
   if (router.isFallback) {
@@ -31,6 +31,18 @@ export default function Post ({ post }) {
 
   return (
     <Theme>
+      <Head>
+        <title>{post.title}</title>
+        <meta name='description' content={post.summary} />
+
+        <meta name='twitter:card' content='summary_large_image' />
+
+        <meta property='og:site_name' content='My Blog App' />
+        <meta property='og:url' content={post.url} />
+        <meta property='og:title' content={post.title} />
+        <meta property='og:description' content={post.summary} />
+        {post.image && (<meta property='og:image' content={post.image} />)}
+      </Head>
       <div className='post'>
         <div className='time'>Published {ms(Date.now() - post.createdAt, { long: true })} ago</div>
         <h1>{post.title}</h1>
@@ -46,7 +58,7 @@ export default function Post ({ post }) {
           </Markdown>
         </div>
         <b>Comments</b>
-        <Comments slug={post.slug}/>
+        <Comments slug={post.slug} />
       </div>
     </Theme>
   )
@@ -67,7 +79,7 @@ export async function getStaticPaths() {
 }
 
 
-export async function getStaticProps ({ params }) {
+export async function getStaticProps({ params }) {
   let post = null
 
   try {
@@ -77,6 +89,9 @@ export async function getStaticProps ({ params }) {
       throw err
     }
   }
+
+  post.url = `http://localhost:3009/post/${post.slug}`
+  post.summary = `${post.content.substr(0, 100)}`
 
   return {
     props: {
