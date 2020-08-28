@@ -3,8 +3,18 @@ import ms from 'ms'
 import Markdown from 'markdown-to-jsx'
 import Youtube from '../../components/Youtube'
 import githubCms from '../../lib/github-cms'
+import { useRouter } from 'next/router'
 
 export default function Post ({ post }) {
+  const router = useRouter()
+  if (router.isFallback) {
+    return (
+      <Theme>
+        loading...
+      </Theme>
+    )
+  }
+
   return (
     <Theme>
       <div className='post'>
@@ -36,7 +46,7 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: false
+    fallback: true
   }
 }
 
