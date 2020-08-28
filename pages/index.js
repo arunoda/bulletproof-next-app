@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import Theme from '../components/Theme'
 import ms from 'ms'
+import { promises as fsPromises } from 'fs'
 
 export default function Home ({ postList }) {
   return (
@@ -22,13 +23,20 @@ export default function Home ({ postList }) {
 }
 
 export async function getStaticProps () {
-  const postList = [
-    {
-      slug: '2020-July-01-Hello-World',
-      title: 'Hello World',
-      createdAt: (new Date('2020 July 01')).getTime()
+  const markdownFiles = await fsPromises.readdir('data')
+
+  const postList = markdownFiles.map(filename => {
+    const slug = filename.replace(/.md$/, '')
+    const [year, month, date, ...rest] = slug.split('-')
+    const createdAt = (new Date(`${year} ${month} ${date}`)).getTime()
+    const title = rest.join(' ')
+
+    return {
+      slug,
+      createdAt,
+      title
     }
-  ]
+  })
 
   return {
     props: {
