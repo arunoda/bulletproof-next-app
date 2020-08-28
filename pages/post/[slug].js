@@ -2,6 +2,7 @@ import Theme from '../../components/Theme'
 import ms from 'ms'
 import { promises as fsPromises } from 'fs'
 import Markdown from 'markdown-to-jsx'
+import Youtube from '../../components/Youtube'
 
 export default function Post ({ post }) {
   return (
@@ -10,7 +11,15 @@ export default function Post ({ post }) {
         <div className='time'>Published {ms(Date.now() - post.createdAt, { long: true })} ago</div>
         <h1>{post.title}</h1>
         <div className='content'>
-          <Markdown>{post.content}</Markdown>
+          <Markdown
+            options={{
+              overrides: {
+                Youtube: { component: Youtube }
+              }
+            }}
+          >
+            {post.content}
+          </Markdown>
         </div>
       </div>
     </Theme>
