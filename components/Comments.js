@@ -14,6 +14,23 @@ export default function Comments({slug}) {
     const [session] = useSession()
     const {data: comments, mutate} = useSWR(`/api/comments?slug=${slug}`, swrFetcher)
 
+    const createComment = async (fakeComment) => {
+        const fetchRes = await fetch(`/api/comments?slug=${slug}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content: fakeComment.content })
+        })
+    
+        if (!fetchRes.ok) {
+            throw new Error(await fetchRes.text())
+        }
+    
+        const addedComment = await fetchRes.json()
+        mutate()
+    }
+
     const handleAddComment = async (content) => {
         const fakeComment = {
             id: Math.random(),
@@ -26,6 +43,8 @@ export default function Comments({slug}) {
         }
     
         mutate([...comments, fakeComment], false)
+
+        createComment(fakeComment)
     }
 
     if (!comments) {
