@@ -56,12 +56,20 @@ export default function EditPost({ post }) {
 }
 
 export async function getServerSideProps({ req, res, params }) {
-  const session = await getSession({ req })
-  const post = await getPost(params.slug, { ownerId: session.user.id })
-
-  return {
-    props: {
-      post
+    const session = await getSession({ req })
+    if (!session) {
+      res.writeHead(302, {
+        'Location': '/'
+      })
+      res.end()
+      return { props: {} }
+    }
+  
+    const post = await getPost(params.slug, { ownerId: session.user.id })
+  
+    return {
+      props: {
+        post
+      }
     }
   }
-}
