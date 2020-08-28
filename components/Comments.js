@@ -16,17 +16,18 @@ export default function Comments({ slug }) {
     const getCacheKey = (pageIndex, prevPageData) => {
         // This is first page
         if (pageIndex === 0) {
-            return `/api/comments?slug=${slug}&limit=${pageLimit}`
+            return `/api/comments?slug=${slug}&limit=${pageLimit}&sort=-1`
         }
-
-        // This is at the end of the list.
+    
+        // This is at the end of the list. We have no more data to fetch
         if (prevPageData.length < pageLimit) {
+            console.log('End of the list')
             return null
         }
-
-        // Here we fetch pages using a offset
+    
+        // Fetch the next page using createdAt time of the lastComment as the offset
         const lastComment = prevPageData[prevPageData.length - 1]
-        return `/api/comments?slug=${slug}&limit=${pageLimit}&offset=${lastComment.createdAt}`
+        return `/api/comments?slug=${slug}&limit=${pageLimit}&offset=${lastComment.createdAt}&sort=-1`
     }
 
     const { data, mutate, size, setSize } = useSWRInfinite(
@@ -97,6 +98,7 @@ export default function Comments({ slug }) {
 
     return (
         <div>
+            <AddCommentBox onSubmit={handleAddComment} />
             {comments && comments.length > 0 ? (
                 <div className="comments">
                     {comments.map(c => (
@@ -123,7 +125,6 @@ export default function Comments({ slug }) {
                     </div>
                     </div>
                 )}
-            <AddCommentBox onSubmit={handleAddComment} />
         </div>
     )
 }
