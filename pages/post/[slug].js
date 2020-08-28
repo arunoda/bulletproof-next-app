@@ -1,5 +1,7 @@
 import Theme from '../../components/Theme'
 import ms from 'ms'
+import { promises as fsPromises } from 'fs'
+import Markdown from 'markdown-to-jsx'
 
 export default function Post ({ post }) {
   return (
@@ -8,7 +10,7 @@ export default function Post ({ post }) {
         <div className='time'>Published {ms(Date.now() - post.createdAt, { long: true })} ago</div>
         <h1>{post.title}</h1>
         <div className='content'>
-          {post.content}
+          <Markdown>{post.content}</Markdown>
         </div>
       </div>
     </Theme>
@@ -31,12 +33,14 @@ export async function getStaticProps ({ params }) {
   const createdAt = (new Date(`${year} ${month} ${day}`)).getTime()
   const title = rest.join(' ')
 
+  const content = await fsPromises.readFile(`data/${params.slug}.md`, 'utf8')
+
   return {
     props: {
       post: {
         slug: params.slug,
         title,
-        content: `This is the content for ${title}`,
+        content,
         createdAt
       }
     }
