@@ -4,6 +4,7 @@ import useSWR from 'swr'
 import AddCommentBox from './AddCommentBox'
 import classNames from 'classnames'
 import axios from 'axios'
+import { useSWRInfinite } from 'swr'
 
 async function swrFetcher(path) {
     const res = await fetch(path)
@@ -11,12 +12,22 @@ async function swrFetcher(path) {
 }
 
 export default function Comments({slug}) {
-    const {data, mutate} = useSWR(
-        `/api/comments?slug=${slug}`,
+    const getCacheKey = (pageIndex, prevPageData) => {
+        return `/api/comments?slug=${slug}`
+    }
+    
+    const {data, mutate} = useSWRInfinite(
+        getCacheKey,
         swrFetcher
     );
     
-    let comments = data;
+    let comments = null
+    if (data) {
+        comments = []
+        for(const pageData of data) {
+            comments = [...comments, ...pageData]
+        }
+    }
 
     const handleAddComment = async (content) => {
         try {
