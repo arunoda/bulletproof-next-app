@@ -18,12 +18,17 @@ export default function Post ({ post }) {
 }
 
 export async function getStaticPaths () {
+  const markdownFiles = await fsPromises.readdir('data')
+
+  const paths = markdownFiles.map(filename => {
+    const slug = filename.replace(/.md$/, '')
+    return {
+      params: { slug }
+    }
+  })
+
   return {
-    paths: [
-      {
-        params: { slug: '2020-July-01-Hello-World' }
-      }
-    ],
+    paths,
     fallback: false
   }
 }
