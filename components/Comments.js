@@ -42,6 +42,37 @@ export default function Comments({ slug }) {
         }
     }
 
+    const renderLoadMore = () => {
+        if (!comments) {
+            return null
+        }
+
+        // We asked for a page, but we haven't seen that yet.
+        if (size > data.length) {
+            return (
+                <span className="load-more">loading...</span>
+            )
+        }
+    
+        // Detecting the end of the list
+        if (pageLimit * size > comments.length) {
+            return null
+        }
+    
+        return (
+            <a
+                href="#"
+                className="load-more"
+                onClick={(e) => {
+                    e.preventDefault()
+                    setSize(size + 1)
+                }}
+            >
+                Load more
+            </a>
+        )
+    }
+
     const handleAddComment = async (content) => {
         try {
             await axios.post(`/api/comments?slug=${slug}`, {
@@ -83,16 +114,7 @@ export default function Comments({ slug }) {
                             </div>
                         </div>
                     ))}
-                    <a
-                        href="#"
-                        className="load-more"
-                        onClick={(e) => {
-                            e.preventDefault()
-                            setSize(size + 1)
-                        }}
-                    >
-                        Load More
-                    </a>
+                    { renderLoadMore() }
                 </div>
             ) : (
                     <div className="comments">
