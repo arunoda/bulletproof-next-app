@@ -30,6 +30,7 @@ describe('Comments', () => {
         addComment(commentText)
 
         cy.get('.user-info a').contains('Logout').click()
+        cy.reload()
         cy.get('.user-info a').contains('Login')
 
         cy.get('.comment').contains(commentText)
