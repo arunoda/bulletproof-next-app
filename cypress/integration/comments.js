@@ -29,8 +29,8 @@ describe('Comments', () => {
         cy.login(username)
         addComment(commentText)
 
-        cy.get('a').contains('Logout').click()
-        cy.get('a').contains('Login')
+        cy.get('.user-info a').contains('Logout').click()
+        cy.get('.user-info a').contains('Login')
 
         cy.get('.comment').contains(commentText)
         cy.get('.comment-author').contains(username)
