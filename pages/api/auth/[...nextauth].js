@@ -4,7 +4,7 @@ import { saveUser, getUser } from '../../../lib/data'
 
 const providers = []
 
-if (process.env.GITHUB_CLIENT_ID) {
+if (process.env.GITHUB_CLIENT_ID && !process.env.IS_TEST_MODE) {
     providers.push(
         Providers.GitHub({
             clientId: process.env.GITHUB_CLIENT_ID,
