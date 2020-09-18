@@ -5,6 +5,7 @@ function addComment(commentText) {
 
 describe('Comments', () => {
     beforeEach(() => {
+        cy.task('resetData')
         cy.visit('http://localhost:3009')
         cy.get('.post-list').contains('Hello World').click()
         cy.get('h1').contains('Hello World')
