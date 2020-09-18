@@ -6,7 +6,8 @@
     "build": "next build",
     "start": "next start -p 3009",
     "lint": "standard",
-    "test-dev": "cypress open"
+    "test-dev": "cypress open",
+    "test": "cypress run"
   },
   "repository": {
     "type": "git",
