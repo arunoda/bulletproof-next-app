@@ -6,6 +6,7 @@ import { getPostList, getPost } from '../../lib/data'
 import { useRouter } from 'next/router'
 import Head from 'next/head'
 import Comments from '../../components/Comments'
+import Code from '../../components/Code'
 import findImageInMarkdown from '../../lib/find-image-in-markdown'
 
 export default function Post({ post }) {
@@ -51,7 +52,8 @@ export default function Post({ post }) {
           <Markdown
             options={{
               overrides: {
-                Youtube: { component: Youtube }
+                Youtube: { component: Youtube },
+                pre: { component: Code }
               }
             }}
           >
